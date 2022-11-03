@@ -9,11 +9,13 @@ public class Movement : MonoBehaviour
     [SerializeField] float rotateSpeed = 100.0f;
 
     Rigidbody body;
+    AudioSource audioSource;
 
     // Start is called before the first frame update
     void Start()
     {
         this.body = this.GetComponent<Rigidbody>();
+        this.audioSource = this.GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -26,7 +28,15 @@ public class Movement : MonoBehaviour
     void ProcessThrust() {
         if (Input.GetKey(KeyCode.Space)) {
             this.body.AddRelativeForce(Vector3.up * thrustForce * Time.fixedDeltaTime);
-        };  
+            // turn on looping and only play if not playing so sound plays out fully then repeats
+            this.audioSource.loop = true;
+            if (!this.audioSource.isPlaying) {
+                this.audioSource.Play();
+            };
+        } else {
+            // turn off looping so sound doesn't stop abruptly
+            this.audioSource.loop = false;
+        }
     }
 
     void ProcessRotation() {
