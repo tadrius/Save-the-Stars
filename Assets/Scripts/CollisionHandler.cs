@@ -37,11 +37,15 @@ public class CollisionHandler : MonoBehaviour
 
     private void LoadNextScene() {
         int nextSceneBuildIndex = SceneManager.GetActiveScene().buildIndex + 1;
-        if (SceneManager.sceneCount > nextSceneBuildIndex) {
+        Debug.Log("Next scene build index: " + nextSceneBuildIndex 
+            + ", Scene count: " + SceneManager.sceneCountInBuildSettings);
+        // load next scene if scene count is greater than next scene index
+        if (SceneManager.sceneCountInBuildSettings > nextSceneBuildIndex) {
             Debug.Log("Loading next scene.");
-            SceneManager.LoadScene(nextSceneBuildIndex + 1);
+            SceneManager.LoadScene(nextSceneBuildIndex);
         } else {
-            Debug.Log("No more scenes.");
+            Debug.Log("No more scenes. Restarting from first scene.");
+            SceneManager.LoadScene(0);
         }
     }
 
