@@ -10,26 +10,45 @@ public class CollisionHandler : MonoBehaviour
     public const string Finish = "Finish";
     public const string Friendly = "Friendly";
 
+    [SerializeField] private float sceneLoadDelay = 1.0f;
+
+    private Movement movement;
+    // TODO - have score carry over between scenes
     private int score = 0;
+
+    private void Start() {
+        movement = GetComponent<Movement>();
+    }
 
     private void OnCollisionEnter(Collision other) {
         switch (other.gameObject.tag) {
             case Collectible:
-                processCollectible(other.gameObject);
+                ProcessCollectible(other.gameObject);
                 break;
             case Friendly:
-                Debug.Log("Collided with Friendly.");
                 break;
             case Finish:
-                LoadNextScene();
+                StartSuccessSequence();
                 break;
             default:
-                ReloadScene();
+                StartFailSequence();
                 break;
         }
     }
 
-    private void processCollectible(GameObject gameObject) {
+    private void StartSuccessSequence() {
+        // TODO - add razzle-dazzle
+        movement.enabled = false;
+        Invoke(nameof(LoadNextScene), sceneLoadDelay);
+    }
+
+    private void StartFailSequence() {
+        // TODO - add razzle-dazzle
+        movement.enabled = false;
+        Invoke(nameof(ReloadScene), sceneLoadDelay);
+    }
+
+    private void ProcessCollectible(GameObject gameObject) {
         score++;
         Debug.Log("Score: " + score);
         gameObject.SetActive(false);
@@ -37,8 +56,6 @@ public class CollisionHandler : MonoBehaviour
 
     private void LoadNextScene() {
         int nextSceneBuildIndex = SceneManager.GetActiveScene().buildIndex + 1;
-        Debug.Log("Next scene build index: " + nextSceneBuildIndex 
-            + ", Scene count: " + SceneManager.sceneCountInBuildSettings);
         // load next scene if scene count is greater than next scene index
         if (SceneManager.sceneCountInBuildSettings > nextSceneBuildIndex) {
             Debug.Log("Loading next scene.");
