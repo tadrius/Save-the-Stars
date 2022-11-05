@@ -10,7 +10,11 @@ public class CollisionHandler : MonoBehaviour
     public const string Finish = "Finish";
     public const string Friendly = "Friendly";
 
+    [SerializeField] private AudioClip collectSound;
+    [SerializeField] private AudioClip failSound;
+    [SerializeField] private AudioClip successSound;
     [SerializeField] private float sceneLoadDelay = 1.0f;
+    AudioSource audioSource;
 
     private Movement movement;
     // TODO - have score carry over between scenes
@@ -18,6 +22,7 @@ public class CollisionHandler : MonoBehaviour
 
     private void Start() {
         movement = GetComponent<Movement>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     private void OnCollisionEnter(Collision other) {
@@ -39,17 +44,20 @@ public class CollisionHandler : MonoBehaviour
     private void StartSuccessSequence() {
         // TODO - add razzle-dazzle
         movement.enabled = false;
+        audioSource.PlayOneShot(successSound);
         Invoke(nameof(LoadNextScene), sceneLoadDelay);
     }
 
     private void StartFailSequence() {
         // TODO - add razzle-dazzle
         movement.enabled = false;
+        audioSource.PlayOneShot(failSound);
         Invoke(nameof(ReloadScene), sceneLoadDelay);
     }
 
     private void ProcessCollectible(GameObject gameObject) {
         score++;
+        audioSource.PlayOneShot(collectSound);
         Debug.Log("Score: " + score);
         gameObject.SetActive(false);
     }

@@ -5,17 +5,23 @@ using UnityEngine;
 public class Movement : MonoBehaviour
 {
 
-    [SerializeField] float thrustForce = 1000.0f;
-    [SerializeField] float rotateSpeed = 100.0f;
+    // PARAMETERS
+    [SerializeField] private float thrustForce = 1000.0f;
+    [SerializeField] private float rotateSpeed = 100.0f;
+    [SerializeField] private AudioClip thrustSound;
 
-    Rigidbody body;
-    AudioSource audioSource;
+    // CACHE
+    private Rigidbody body;
+    private AudioSource audioSource;
+
+    // STATE
+    // private bool isAlive;
 
     // Start is called before the first frame update
     void Start()
     {
-        this.body = this.GetComponent<Rigidbody>();
-        this.audioSource = this.GetComponent<AudioSource>();
+        body = GetComponent<Rigidbody>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -27,9 +33,9 @@ public class Movement : MonoBehaviour
 
     void ProcessThrust() {
         if (Input.GetKey(KeyCode.Space)) {
-            this.body.AddRelativeForce(Vector3.up * thrustForce * Time.fixedDeltaTime);
-            if (!this.audioSource.isPlaying) {
-                this.audioSource.Play();
+            body.AddRelativeForce(Vector3.up * thrustForce * Time.fixedDeltaTime);
+            if (!audioSource.isPlaying) {
+                audioSource.PlayOneShot(thrustSound);
             };
         }
     }
@@ -37,7 +43,7 @@ public class Movement : MonoBehaviour
     void ProcessRotation() {
         bool left = Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A);
         bool right = Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D);
-        this.body.angularVelocity = Vector3.zero;
+        body.angularVelocity = Vector3.zero;
         if (left && right) {
             return;
         } else if (left) {
@@ -48,6 +54,6 @@ public class Movement : MonoBehaviour
     }
 
     void applyRotation(Vector3 direction) {
-        this.body.angularVelocity = direction.normalized * rotateSpeed * Time.fixedDeltaTime;
+        body.angularVelocity = direction.normalized * rotateSpeed * Time.fixedDeltaTime;
     }
 }
