@@ -6,19 +6,24 @@ using UnityEngine.SceneManagement;
 public class CollisionHandler : MonoBehaviour
 {
 
+    // TODO - where do constants go?
     public const string Collectible = "Collectible";
     public const string Finish = "Finish";
     public const string Friendly = "Friendly";
 
+    // PARAMETERS
     [SerializeField] private AudioClip collectSound;
     [SerializeField] private AudioClip failSound;
     [SerializeField] private AudioClip successSound;
     [SerializeField] private float sceneLoadDelay = 1.0f;
-    AudioSource audioSource;
 
+    // CACHE
+    private AudioSource audioSource;
     private Movement movement;
-    // TODO - have score carry over between scenes
+
+    // STATE
     private int score = 0;
+    private bool isTransitioning = false;
 
     private void Start() {
         movement = GetComponent<Movement>();
@@ -26,6 +31,9 @@ public class CollisionHandler : MonoBehaviour
     }
 
     private void OnCollisionEnter(Collision other) {
+        if (isTransitioning) {
+            return;
+        }
         switch (other.gameObject.tag) {
             case Collectible:
                 ProcessCollectible(other.gameObject);
@@ -33,26 +41,29 @@ public class CollisionHandler : MonoBehaviour
             case Friendly:
                 break;
             case Finish:
-                StartSuccessSequence();
+                StartSequence(nameof(LoadNextScene), successSound);
                 break;
             default:
-                StartFailSequence();
+                StartSequence(nameof(ReloadScene), failSound);
                 break;
         }
     }
 
-    private void StartSuccessSequence() {
-        // TODO - add razzle-dazzle
-        movement.enabled = false;
-        audioSource.PlayOneShot(successSound);
-        Invoke(nameof(LoadNextScene), sceneLoadDelay);
-    }
+    private void StartSequence(string methodName, AudioClip sound) {
+        // TODO - add additional flair
 
-    private void StartFailSequence() {
-        // TODO - add razzle-dazzle
+        // stop player from taking more actions
+        isTransitioning = true;
         movement.enabled = false;
-        audioSource.PlayOneShot(failSound);
-        Invoke(nameof(ReloadScene), sceneLoadDelay);
+
+        // play appropriate sound
+        if (null != sound) {
+            audioSource.PlayOneShot(sound);
+        }
+
+        // TODO - replace with coroutine
+        // invoke given method
+        Invoke(methodName, sceneLoadDelay);
     }
 
     private void ProcessCollectible(GameObject gameObject) {
@@ -62,21 +73,24 @@ public class CollisionHandler : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    private void LoadNextScene() {
-        int nextSceneBuildIndex = SceneManager.GetActiveScene().buildIndex + 1;
+    private void LoadScene(int sceneBuildIndex) {
         // load next scene if scene count is greater than next scene index
-        if (SceneManager.sceneCountInBuildSettings > nextSceneBuildIndex) {
-            Debug.Log("Loading next scene.");
-            SceneManager.LoadScene(nextSceneBuildIndex);
+        if (SceneManager.sceneCountInBuildSettings > sceneBuildIndex) {
+            SceneManager.LoadScene(sceneBuildIndex);
         } else {
-            Debug.Log("No more scenes. Restarting from first scene.");
+            Debug.Log("Scene build index is greater than scene count. Loading the first scene.");
             SceneManager.LoadScene(0);
         }
     }
 
+    private void LoadNextScene() {
+        Debug.Log("Loading next scene.");
+        LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+    }
+
     private void ReloadScene() {
         Debug.Log("Reloading scene.");
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
     
 }
