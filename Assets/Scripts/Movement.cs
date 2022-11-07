@@ -9,10 +9,15 @@ public class Movement : MonoBehaviour
     [SerializeField] private float thrustForce = 1000.0f;
     [SerializeField] private float rotateSpeed = 100.0f;
     [SerializeField] private AudioClip thrustSound;
+    [SerializeField] private ParticleSystem thrustParticles;
+    [SerializeField] private ParticleSystem leftRotateParticles;
+    [SerializeField] private ParticleSystem rightRotateParticles;
+
 
     // CACHE
     private Rigidbody body;
     private AudioSource audioSource;
+    public List<ParticleSystem> particleSystems;
 
     // STATE
 
@@ -21,6 +26,10 @@ public class Movement : MonoBehaviour
     {
         body = GetComponent<Rigidbody>();
         audioSource = GetComponent<AudioSource>();
+        particleSystems = new List<ParticleSystem>(3);
+        particleSystems.Add(thrustParticles);
+        particleSystems.Add(leftRotateParticles);
+        particleSystems.Add(rightRotateParticles);
     }
 
     // Update is called once per frame
@@ -33,26 +42,41 @@ public class Movement : MonoBehaviour
     void ProcessThrust() {
         if (Input.GetKey(KeyCode.Space)) {
             body.AddRelativeForce(Vector3.up * thrustForce * Time.fixedDeltaTime);
-            if (!audioSource.isPlaying) {
-                audioSource.PlayOneShot(thrustSound);
-            };
+            PlayParticlesAndSound(thrustParticles, thrustSound);
+        } else {
+            thrustParticles.Stop();
+        }
+    }
+
+    private void PlayParticlesAndSound(ParticleSystem particles, AudioClip sound) {
+        if (!audioSource.isPlaying) {
+            audioSource.PlayOneShot(thrustSound);
+        }
+        if (!particles.isPlaying) {
+            particles.Play();
         }
     }
 
     void ProcessRotation() {
-        bool left = Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A);
-        bool right = Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D);
+        bool leftPressed = Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A);
+        bool rightPressed = Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D);
         body.angularVelocity = Vector3.zero;
-        if (left && right) {
-            return;
-        } else if (left) {
-            applyRotation(Vector3.forward);
-        } else if (right) {
-            applyRotation(Vector3.back);
-        }; 
+        if (leftPressed && rightPressed) {
+            leftRotateParticles.Stop();
+            rightRotateParticles.Stop();
+        } else if (leftPressed) {
+            ApplyRotation(Vector3.forward);
+            PlayParticlesAndSound(leftRotateParticles, thrustSound);
+        } else if (rightPressed) {
+            ApplyRotation(Vector3.back);
+            PlayParticlesAndSound(rightRotateParticles, thrustSound);
+        } else {
+            leftRotateParticles.Stop();
+            rightRotateParticles.Stop();
+        }
     }
 
-    void applyRotation(Vector3 direction) {
+    void ApplyRotation(Vector3 direction) {
         body.angularVelocity = direction.normalized * rotateSpeed * Time.fixedDeltaTime;
     }
 }

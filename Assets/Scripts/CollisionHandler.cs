@@ -15,6 +15,9 @@ public class CollisionHandler : MonoBehaviour
     [SerializeField] private AudioClip collectSound;
     [SerializeField] private AudioClip failSound;
     [SerializeField] private AudioClip successSound;
+    [SerializeField] private ParticleSystem collectParticles;
+    [SerializeField] private ParticleSystem failParticles;
+    [SerializeField] private ParticleSystem successParticles;
     [SerializeField] private float sceneLoadDelay = 1.0f;
 
     // CACHE
@@ -41,24 +44,30 @@ public class CollisionHandler : MonoBehaviour
             case Friendly:
                 break;
             case Finish:
-                StartSequence(nameof(LoadNextScene), successSound);
+                StartTransitionSequence(nameof(LoadNextScene), successSound, successParticles);
                 break;
             default:
-                StartSequence(nameof(ReloadScene), failSound);
+                StartTransitionSequence(nameof(ReloadScene), failSound, failParticles);
                 break;
         }
     }
 
-    private void StartSequence(string methodName, AudioClip sound) {
-        // TODO - add additional flair
-
+    private void StartTransitionSequence(string methodName, AudioClip sound, ParticleSystem particles) {
         // stop player from taking more actions
         isTransitioning = true;
         movement.enabled = false;
+        
+        // turn off movement particles
+        foreach (ParticleSystem ps in movement.particleSystems) {
+            ps.Stop();
+        }
 
-        // play appropriate sound
+        // play appropriate SFX and VFX
         if (null != sound) {
             audioSource.PlayOneShot(sound);
+        }
+        if (null != particles) {
+            particles.Play();
         }
 
         // TODO - replace with coroutine
