@@ -6,41 +6,61 @@ using UnityEngine.SceneManagement;
 public class CollisionHandler : MonoBehaviour
 {
 
-    // TODO - where do constants go?
     public const string Collectible = "Collectible";
     public const string Finish = "Finish";
     public const string Friendly = "Friendly";
 
     // PARAMETERS
-    [SerializeField] private AudioClip collectSound;
-    [SerializeField] private AudioClip failSound;
-    [SerializeField] private AudioClip successSound;
-    [SerializeField] private ParticleSystem collectParticles;
-    [SerializeField] private ParticleSystem failParticles;
-    [SerializeField] private ParticleSystem successParticles;
-    [SerializeField] private float sceneLoadDelay = 1.0f;
+    [SerializeField] AudioClip collectSound;
+    [SerializeField] AudioClip failSound;
+    [SerializeField] AudioClip successSound;
+    [SerializeField] ParticleSystem collectParticles;
+    [SerializeField] ParticleSystem failParticles;
+    [SerializeField] ParticleSystem successParticles;
+    [SerializeField] float sceneLoadDelay = 1.0f;
 
     // CACHE
-    private AudioSource audioSource;
-    private Movement movement;
+    AudioSource audioSource;
+    Movement movement;
 
     // STATE
-    private int score = 0;
-    private bool isTransitioning = false;
+    int score = 0;
+    bool isTransitioning = false;
+    bool collisionsDisabled = false;
 
-    private void Start() {
+    void Start()
+    {
         movement = GetComponent<Movement>();
         audioSource = GetComponent<AudioSource>();
     }
 
-    private void OnCollisionEnter(Collision other) {
-        if (isTransitioning) {
+    void Update()
+    {
+        ProcessDebugKeys();
+    }
+
+    void ProcessDebugKeys()
+    {
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            LoadNextScene();
+        }
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            // toggle collision disabled
+            collisionsDisabled = !collisionsDisabled;
+            Debug.Log("Collisions disabled: " + collisionsDisabled);
+        }
+    }
+
+    void OnCollisionEnter(Collision other)
+    {
+        if (isTransitioning || collisionsDisabled)
+        {
             return;
         }
-        switch (other.gameObject.tag) {
-            case Collectible:
-                ProcessCollectible(other.gameObject);
-                break;
+        switch (other.gameObject.tag)
+        {
             case Friendly:
                 break;
             case Finish:
@@ -52,21 +72,41 @@ public class CollisionHandler : MonoBehaviour
         }
     }
 
-    private void StartTransitionSequence(string methodName, AudioClip sound, ParticleSystem particles) {
+    void OnTriggerEnter(Collider other) 
+    {
+        if (isTransitioning)
+        {
+            return;
+        }
+        switch (other.gameObject.tag)
+        {
+            case Collectible:
+                ProcessCollectible(other.gameObject);
+                break;
+            default:
+                break;
+        }      
+    }
+
+    void StartTransitionSequence(string methodName, AudioClip sound, ParticleSystem particles)
+    {
         // stop player from taking more actions
         isTransitioning = true;
         movement.enabled = false;
-        
+
         // turn off movement particles
-        foreach (ParticleSystem ps in movement.particleSystems) {
+        foreach (ParticleSystem ps in movement.particleSystems)
+        {
             ps.Stop();
         }
 
         // play appropriate SFX and VFX
-        if (null != sound) {
+        if (null != sound)
+        {
             audioSource.PlayOneShot(sound);
         }
-        if (null != particles) {
+        if (null != particles)
+        {
             particles.Play();
         }
 
@@ -75,31 +115,38 @@ public class CollisionHandler : MonoBehaviour
         Invoke(methodName, sceneLoadDelay);
     }
 
-    private void ProcessCollectible(GameObject gameObject) {
+    void ProcessCollectible(GameObject gameObject)
+    {
         score++;
         audioSource.PlayOneShot(collectSound);
         Debug.Log("Score: " + score);
         gameObject.SetActive(false);
     }
 
-    private void LoadScene(int sceneBuildIndex) {
+    void LoadNextScene()
+    {
+        Debug.Log("Loading next scene.");
+        LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+    }
+
+    void ReloadScene()
+    {
+        Debug.Log("Reloading scene.");
+        LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
+    void LoadScene(int sceneBuildIndex)
+    {
         // load next scene if scene count is greater than next scene index
-        if (SceneManager.sceneCountInBuildSettings > sceneBuildIndex) {
+        if (SceneManager.sceneCountInBuildSettings > sceneBuildIndex)
+        {
             SceneManager.LoadScene(sceneBuildIndex);
-        } else {
+        }
+        else
+        {
             Debug.Log("Scene build index is greater than scene count. Loading the first scene.");
             SceneManager.LoadScene(0);
         }
     }
 
-    private void LoadNextScene() {
-        Debug.Log("Loading next scene.");
-        LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
-    }
-
-    private void ReloadScene() {
-        Debug.Log("Reloading scene.");
-        LoadScene(SceneManager.GetActiveScene().buildIndex);
-    }
-    
 }
