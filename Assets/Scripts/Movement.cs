@@ -13,7 +13,6 @@ public class Movement : MonoBehaviour
     [SerializeField] private ParticleSystem leftRotateParticles;
     [SerializeField] private ParticleSystem rightRotateParticles;
 
-
     // CACHE
     private Rigidbody body;
     private AudioSource audioSource;
@@ -26,6 +25,9 @@ public class Movement : MonoBehaviour
     {
         body = GetComponent<Rigidbody>();
         audioSource = GetComponent<AudioSource>();
+
+        // create a list of all particle systems used by movement
+        // so that other classes can stop all of them
         particleSystems = new List<ParticleSystem>(3);
         particleSystems.Add(thrustParticles);
         particleSystems.Add(leftRotateParticles);
@@ -39,44 +41,75 @@ public class Movement : MonoBehaviour
         ProcessRotation();
     }
 
-    void ProcessThrust() {
-        if (Input.GetKey(KeyCode.Space)) {
-            body.AddRelativeForce(Vector3.up * thrustForce * Time.fixedDeltaTime);
+    void ProcessThrust()
+    {
+        if (Input.GetKey(KeyCode.Space))
+        {
+            ApplyThrust();
             PlayParticlesAndSound(thrustParticles, thrustSound);
-        } else {
+        }
+        else
+        {
             thrustParticles.Stop();
         }
     }
 
-    private void PlayParticlesAndSound(ParticleSystem particles, AudioClip sound) {
-        if (!audioSource.isPlaying) {
+
+    void ProcessRotation()
+    {
+        // check for key presses
+        bool leftPressed = Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A);
+        bool rightPressed = Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D);
+        
+        // reset angular velocity
+        body.angularVelocity = Vector3.zero;
+
+        // depending on key presses, apply different rotations and FX
+        if (leftPressed && rightPressed)
+        {
+            StopRotationParticles();
+        }
+        else if (leftPressed)
+        {
+            ApplyRotation(Vector3.forward, leftRotateParticles, thrustSound);
+        }
+        else if (rightPressed)
+        {
+            ApplyRotation(Vector3.back, rightRotateParticles, thrustSound);
+        }
+        else
+        {
+            StopRotationParticles();
+        }
+    }
+
+    private void ApplyThrust()
+    {
+        body.AddRelativeForce(Vector3.up * thrustForce * Time.fixedDeltaTime);
+    }
+
+    void ApplyRotation(Vector3 direction, ParticleSystem particles, AudioClip sound)
+    {
+        body.angularVelocity = direction.normalized * rotateSpeed * Time.fixedDeltaTime;
+        PlayParticlesAndSound(particles, sound);
+    }
+
+    void StopRotationParticles()
+    {
+        leftRotateParticles.Stop();
+        rightRotateParticles.Stop();
+    }
+
+    private void PlayParticlesAndSound(ParticleSystem particles, AudioClip sound)
+    {
+        if (!audioSource.isPlaying)
+        {
             audioSource.PlayOneShot(thrustSound);
         }
-        if (!particles.isPlaying) {
+        if (!particles.isPlaying)
+        {
             particles.Play();
         }
     }
 
-    void ProcessRotation() {
-        bool leftPressed = Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A);
-        bool rightPressed = Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D);
-        body.angularVelocity = Vector3.zero;
-        if (leftPressed && rightPressed) {
-            leftRotateParticles.Stop();
-            rightRotateParticles.Stop();
-        } else if (leftPressed) {
-            ApplyRotation(Vector3.forward);
-            PlayParticlesAndSound(leftRotateParticles, thrustSound);
-        } else if (rightPressed) {
-            ApplyRotation(Vector3.back);
-            PlayParticlesAndSound(rightRotateParticles, thrustSound);
-        } else {
-            leftRotateParticles.Stop();
-            rightRotateParticles.Stop();
-        }
-    }
-
-    void ApplyRotation(Vector3 direction) {
-        body.angularVelocity = direction.normalized * rotateSpeed * Time.fixedDeltaTime;
-    }
 }
