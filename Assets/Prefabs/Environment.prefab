@@ -44,7 +44,7 @@ Light:
   m_Type: 1
   m_Shape: 0
   m_Color: {r: 0.6156863, g: 0.69411767, b: 0.7372549, a: 1}
-  m_Intensity: 1
+  m_Intensity: 0.75
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -171,7 +171,7 @@ Light:
   m_Type: 1
   m_Shape: 0
   m_Color: {r: 0.7803922, g: 0.6627451, b: 0.7137255, a: 1}
-  m_Intensity: 0.5
+  m_Intensity: 0.25
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -215,7 +215,7 @@ Light:
   m_AreaSize: {x: 1, y: 1}
   m_BounceIntensity: 1
   m_ColorTemperature: 6570
-  m_UseColorTemperature: 1
+  m_UseColorTemperature: 0
   m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
@@ -318,6 +318,18 @@ PrefabInstance:
     - target: {fileID: 6901917862262632973, guid: a974a99028f005a4d9f1c5894fccdf21, type: 3}
       propertyPath: m_RootOrder
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6901917862262632973, guid: a974a99028f005a4d9f1c5894fccdf21, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 6901917862262632973, guid: a974a99028f005a4d9f1c5894fccdf21, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 6901917862262632973, guid: a974a99028f005a4d9f1c5894fccdf21, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 200
       objectReference: {fileID: 0}
     - target: {fileID: 6901917862262632973, guid: a974a99028f005a4d9f1c5894fccdf21, type: 3}
       propertyPath: m_LocalPosition.x
