@@ -102,11 +102,11 @@ public class Movement : MonoBehaviour
 
     private void PlayParticlesAndSound(ParticleSystem particles, AudioClip sound)
     {
-        if (!audioSource.isPlaying)
+        if (null != sound && !audioSource.isPlaying)
         {
-            audioSource.PlayOneShot(thrustSound);
+            audioSource.PlayOneShot(sound);
         }
-        if (!particles.isPlaying)
+        if (null != particles && !particles.isPlaying)
         {
             particles.Play();
         }

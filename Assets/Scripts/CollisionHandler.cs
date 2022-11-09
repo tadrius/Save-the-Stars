@@ -39,6 +39,7 @@ public class CollisionHandler : MonoBehaviour
         ProcessDebugKeys();
     }
 
+    // TODO - remove debug inputs for publishing
     void ProcessDebugKeys()
     {
         if (Input.GetKeyDown(KeyCode.L))
@@ -101,14 +102,7 @@ public class CollisionHandler : MonoBehaviour
         }
 
         // play appropriate SFX and VFX
-        if (null != sound)
-        {
-            audioSource.PlayOneShot(sound);
-        }
-        if (null != particles)
-        {
-            particles.Play();
-        }
+        PlayParticlesAndSound(particles, sound);
 
         // TODO - replace with coroutine
         // invoke given method
@@ -118,7 +112,7 @@ public class CollisionHandler : MonoBehaviour
     void ProcessCollectible(GameObject gameObject)
     {
         score++;
-        audioSource.PlayOneShot(collectSound);
+        PlayParticlesAndSound(collectParticles, collectSound);
         Debug.Log("Score: " + score);
         gameObject.SetActive(false);
     }
@@ -146,6 +140,18 @@ public class CollisionHandler : MonoBehaviour
         {
             Debug.Log("Scene build index is greater than scene count. Loading the first scene.");
             SceneManager.LoadScene(0);
+        }
+    }
+
+    private void PlayParticlesAndSound(ParticleSystem particles, AudioClip sound)
+    {
+        if (null != sound)
+        {
+            audioSource.PlayOneShot(sound);
+        }
+        if (null != particles && !particles.isPlaying)
+        {
+            particles.Play();
         }
     }
 
