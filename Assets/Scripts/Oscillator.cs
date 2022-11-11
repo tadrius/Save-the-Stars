@@ -32,6 +32,9 @@ public class Oscillator : MonoBehaviour
     }
 
     private float getMovementFactor(float time, float periodOffset) {
+        // if dividing by period rather than multiplying by frequency, protect against division by 0
+        // if (period <= Mathf.Epsilon) { return; }
+
         float cycles = time * frequency; // frequency as inverse of period
         const float tau = Mathf.PI * 2.0f ; // number of radians in a circle
         float sinWave = Mathf.Sin((cycles + periodOffset) * tau); // value from -1 : 1
