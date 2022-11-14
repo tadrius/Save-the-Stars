@@ -42,11 +42,11 @@ public class CollisionHandler : MonoBehaviour
     // TODO - remove debug inputs for publishing
     void ProcessDebugKeys()
     {
-        if (Input.GetKeyDown(KeyCode.L))
+        if (Input.GetKeyDown(KeyCode.L) && Input.GetKey(KeyCode.LeftShift))
         {
             LoadNextScene();
         }
-        if (Input.GetKeyDown(KeyCode.C))
+        if (Input.GetKeyDown(KeyCode.C) && Input.GetKey(KeyCode.LeftShift))
         {
             // toggle collision disabled
             collisionsDisabled = !collisionsDisabled;
