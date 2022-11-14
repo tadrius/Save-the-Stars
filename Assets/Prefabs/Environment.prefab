@@ -617,7 +617,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1913729805}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -5.2, z: 65}
+  m_LocalPosition: {x: 55, y: -5.2, z: 65}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -639,7 +639,7 @@ ReflectionProbe:
   m_TimeSlicingMode: 0
   m_Resolution: 128
   m_UpdateFrequency: 0
-  m_BoxSize: {x: 400, y: 25, z: 165}
+  m_BoxSize: {x: 200, y: 25, z: 165}
   m_BoxOffset: {x: 0, y: 0, z: 0}
   m_NearClip: 0.3
   m_FarClip: 1000
@@ -701,7 +701,7 @@ Light:
   m_Type: 1
   m_Shape: 0
   m_Color: {r: 0.6156863, g: 0.69411767, b: 0.7372549, a: 1}
-  m_Intensity: 0.62
+  m_Intensity: 0.35
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -743,7 +743,7 @@ Light:
   m_Lightmapping: 4
   m_LightShadowCasterMode: 0
   m_AreaSize: {x: 1, y: 1}
-  m_BounceIntensity: 0.6
+  m_BounceIntensity: 1
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
   m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
@@ -827,8 +827,8 @@ Light:
   serializedVersion: 10
   m_Type: 1
   m_Shape: 0
-  m_Color: {r: 0.7803922, g: 0.6627451, b: 0.7137255, a: 1}
-  m_Intensity: 0.3
+  m_Color: {r: 0.7735849, g: 0.5947846, b: 0.67226475, a: 1}
+  m_Intensity: 0.275
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -18214,15 +18214,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6901917862262632973, guid: a974a99028f005a4d9f1c5894fccdf21, type: 3}
       propertyPath: m_LocalScale.x
-      value: 200
+      value: 115
       objectReference: {fileID: 0}
     - target: {fileID: 6901917862262632973, guid: a974a99028f005a4d9f1c5894fccdf21, type: 3}
       propertyPath: m_LocalScale.y
-      value: 200
+      value: 115
       objectReference: {fileID: 0}
     - target: {fileID: 6901917862262632973, guid: a974a99028f005a4d9f1c5894fccdf21, type: 3}
       propertyPath: m_LocalScale.z
-      value: 200
+      value: 115
       objectReference: {fileID: 0}
     - target: {fileID: 6901917862262632973, guid: a974a99028f005a4d9f1c5894fccdf21, type: 3}
       propertyPath: m_LocalPosition.x
@@ -21960,7 +21960,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 879819370000335482, guid: 691f6f30e435fd24c9b8e83d88f84794, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 500
+      value: 400
       objectReference: {fileID: 0}
     - target: {fileID: 879819370000335482, guid: 691f6f30e435fd24c9b8e83d88f84794, type: 3}
       propertyPath: m_LocalRotation.w
@@ -21995,8 +21995,12 @@ PrefabInstance:
       value: Dust Cloud Background Particles
       objectReference: {fileID: 0}
     - target: {fileID: 2977325957430127019, guid: 691f6f30e435fd24c9b8e83d88f84794, type: 3}
+      propertyPath: ShapeModule.m_Scale.x
+      value: 1100
+      objectReference: {fileID: 0}
+    - target: {fileID: 2977325957430127019, guid: 691f6f30e435fd24c9b8e83d88f84794, type: 3}
       propertyPath: InitialModule.maxNumParticles
-      value: 1250
+      value: 800
       objectReference: {fileID: 0}
     - target: {fileID: 2977325957430127019, guid: 691f6f30e435fd24c9b8e83d88f84794, type: 3}
       propertyPath: InitialModule.startSize.scalar
@@ -28346,7 +28350,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1950279904951174714, guid: cfcfa5f6d69820f4480e9eaefacb44e9, type: 3}
       propertyPath: InitialModule.maxNumParticles
-      value: 1000
+      value: 850
       objectReference: {fileID: 0}
     - target: {fileID: 1950279904951174714, guid: cfcfa5f6d69820f4480e9eaefacb44e9, type: 3}
       propertyPath: InitialModule.startSize.scalar
