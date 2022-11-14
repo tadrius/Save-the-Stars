@@ -36,10 +36,10 @@ public class CollisionHandler : MonoBehaviour
 
     void Update()
     {
-        ProcessDebugKeys();
+        // TODO - remove debug inputs for publishing
+        // ProcessDebugKeys();
     }
 
-    // TODO - remove debug inputs for publishing
     void ProcessDebugKeys()
     {
         if (Input.GetKeyDown(KeyCode.L) && Input.GetKey(KeyCode.LeftShift))
