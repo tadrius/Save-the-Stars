@@ -5,16 +5,40 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Single Over.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
   - enabled: 0
     path: 
     guid: 00000000000000000000000000000000
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Single Under.unity
     guid: 3cecd33db8d36dc4fa24b8457289ef6d
   - enabled: 1
-    path: Assets/Scenes/Big.unity
+    path: Assets/Scenes/Through Center.unity
+    guid: 9ec5ea965412cf74799034b73981f758
+  - enabled: 1
+    path: Assets/Scenes/Through Funnel.unity
+    guid: a9b591b5eb11bfc48bc40ef13403f28a
+  - enabled: 1
+    path: Assets/Scenes/Zoom Up.unity
+    guid: fff5191c28b03dd4b8716ca39f774114
+  - enabled: 1
+    path: Assets/Scenes/Zoom Down.unity
+    guid: f3b2920d78f07b94693b2b8e4d6c28bc
+  - enabled: 1
+    path: Assets/Scenes/Zigzag Vertical.unity
+    guid: 816d202c2d3886445bdb5ae328d7f814
+  - enabled: 1
+    path: Assets/Scenes/Zigzag Horizontal.unity
+    guid: 5c163ccaf13c74d4b96db216e4d07812
+  - enabled: 1
+    path: Assets/Scenes/Through Center Dodge.unity
+    guid: 408247619bfca1741a4e8460c4ca2f51
+  - enabled: 1
+    path: Assets/Scenes/Collapsing Corridor.unity
+    guid: 44baa926112cee548b82c514a899fd08
+  - enabled: 1
+    path: Assets/Scenes/Big Random.unity
     guid: c06f136e13211a94ab7fb5c1622dbbac
   m_configObjects: {}

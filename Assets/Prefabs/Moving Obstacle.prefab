@@ -111,11 +111,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a9c087cdb1d2e9419754a2bd4b5c5f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  translateVector: {x: 1, y: 0, z: 0}
+  translateVector: {x: 0, y: 0, z: 0}
   translatePeriodOffset: 0
   rotateVector: {x: 0, y: 0, z: 0}
   rotatePeriodOffset: 0.25
-  frequency: 0.5
+  frequency: 0.25
 --- !u!54 &8764703006458104832
 Rigidbody:
   m_ObjectHideFlags: 0
